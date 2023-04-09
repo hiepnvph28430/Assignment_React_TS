@@ -1,0 +1,13 @@
+{
+  "products": [
+    {
+      "name": "san pham 2",
+      "id": 3
+    },
+    {
+      "name": "sp4 update",
+      "price": "9",
+      "id": 4
+    }
+  ]
+}
