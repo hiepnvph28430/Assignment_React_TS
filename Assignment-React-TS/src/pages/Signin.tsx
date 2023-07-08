@@ -1,118 +1,130 @@
 import React from 'react'
 import { useForm } from 'react-hook-form';
-
+import * as Yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { SigninForm, signinSchema } from '../interfaces/user'
+import { signin } from '../api/auth'
+import { useLocalStorage } from '../hooks'
+import { Link, useNavigate } from 'react-router-dom';
 type Props = {}
 
 const Signin = (props: Props) => {
-    const { register, handleSubmit, formState: { errors } } = useForm();
-    const onHandleSubmit = async (data: any) => {
-        console.log(data)
-
+    const navigate = useNavigate()
+    const { register, handleSubmit, formState: { errors } } = useForm<SigninForm>({
+        resolver: yupResolver(signinSchema)
+    });
+    const [user, setUser] = useLocalStorage("user", null)
+    const onSubmit = async (data: SigninForm) => {
+        // console.log(data)
+        try {
+            const { data: { accessToken, user } } = await signin(data)
+            setUser({
+                accessToken,
+                ...user
+            })
+            if (user.role == 'admin') {
+                navigate('/admin')
+            } else {
+                navigate('/')
+            }
+        } catch (error) {
+            console.log(error)
+        }
     }
     return (
-        <div>
-            <div className="tw-mx-auto tw-max-w-screen-xl tw-px-4 tw-py-16 tw-sm:px-6 tw-lg:px-8">
-                <div className="tw-mx-auto tw-max-w-lg">
-                    <h1 className="tw-text-center tw-text-2xl tw-font-bold tw-text-indigo-600 tw-sm:text-3xl ">
-                        Get started today
-                    </h1>
+        <section className="tw-bg-white">
+            <div className="tw-lg:grid tw-lg:min-h-screen tw-lg:grid-cols-12">
+                {/* <aside
+                className="tw-relative tw-block tw-h-16 tw-lg:order-last tw-lg:col-span-5 tw-lg:h-full tw-xl:col-span-6"
+            >
+                <img
+                    alt="Pattern"
+                    src="https://picsum.photos/200/300"
+                    className="tw-absolute tw-inset-0 tw-h-full tw-w-full tw-object-cover"
+                />
+            </aside> */}
 
-                    <p className="tw-mx-auto tw-mt-4 tw-max-w-md tw-text-center tw-text-gray-500">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati sunt
-                        dolores deleniti inventore quaerat mollitia?
-                    </p>
+                <main
+                    aria-label="Main"
+                    className="tw-flex tw-items-center tw-justify-center tw-px-8 tw-py-8 tw-sm:px-12 tw-lg:col-span-7 tw-lg:py-12 tw-lg:px-16 tw-xl:col-span-6"
+                >
+                    <div className="tw-max-w-xl tw-lg:max-w-3xl">
+                        <a className="tw-block tw-text-blue-600" href="/">
+                            <span className="tw-sr-only">Home</span>
+                            <svg
+                                className="tw-h-8 tw-sm:h-10"
+                                viewBox="0 0 28 24"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    d="M0.41 10.3847C1.14777 7.4194 2.85643 4.7861 5.2639 2.90424C7.6714 1.02234 10.6393 0 13.695 0C16.7507 0 19.7186 1.02234 22.1261 2.90424C24.5336 4.7861 26.2422 7.4194 26.98 10.3847H25.78C23.7557 10.3549 21.7729 10.9599 20.11 12.1147C20.014 12.1842 19.9138 12.2477 19.81 12.3047H19.67C19.5662 12.2477 19.466 12.1842 19.37 12.1147C17.6924 10.9866 15.7166 10.3841 13.695 10.3841C11.6734 10.3841 9.6976 10.9866 8.02 12.1147C7.924 12.1842 7.8238 12.2477 7.72 12.3047H7.58C7.4762 12.2477 7.376 12.1842 7.28 12.1147C5.6171 10.9599 3.6343 10.3549 1.61 10.3847H0.41ZM23.62 16.6547C24.236 16.175 24.9995 15.924 25.78 15.9447H27.39V12.7347H25.78C24.4052 12.7181 23.0619 13.146 21.95 13.9547C21.3243 14.416 20.5674 14.6649 19.79 14.6649C19.0126 14.6649 18.2557 14.416 17.63 13.9547C16.4899 13.1611 15.1341 12.7356 13.745 12.7356C12.3559 12.7356 11.0001 13.1611 9.86 13.9547C9.2343 14.416 8.4774 14.6649 7.7 14.6649C6.9226 14.6649 6.1657 14.416 5.54 13.9547C4.4144 13.1356 3.0518 12.7072 1.66 12.7347H0V15.9447H1.61C2.39051 15.924 3.154 16.175 3.77 16.6547C4.908 17.4489 6.2623 17.8747 7.65 17.8747C9.0377 17.8747 10.392 17.4489 11.53 16.6547C12.1468 16.1765 12.9097 15.9257 13.69 15.9447C14.4708 15.9223 15.2348 16.1735 15.85 16.6547C16.9901 17.4484 18.3459 17.8738 19.735 17.8738C21.1241 17.8738 22.4799 17.4484 23.62 16.6547ZM23.62 22.3947C24.236 21.915 24.9995 21.664 25.78 21.6847H27.39V18.4747H25.78C24.4052 18.4581 23.0619 18.886 21.95 19.6947C21.3243 20.156 20.5674 20.4049 19.79 20.4049C19.0126 20.4049 18.2557 20.156 17.63 19.6947C16.4899 18.9011 15.1341 18.4757 13.745 18.4757C12.3559 18.4757 11.0001 18.9011 9.86 19.6947C9.2343 20.156 8.4774 20.4049 7.7 20.4049C6.9226 20.4049 6.1657 20.156 5.54 19.6947C4.4144 18.8757 3.0518 18.4472 1.66 18.4747H0V21.6847H1.61C2.39051 21.664 3.154 21.915 3.77 22.3947C4.908 23.1889 6.2623 23.6147 7.65 23.6147C9.0377 23.6147 10.392 23.1889 11.53 22.3947C12.1468 21.9165 12.9097 21.6657 13.69 21.6847C14.4708 21.6623 15.2348 21.9135 15.85 22.3947C16.9901 23.1884 18.3459 23.6138 19.735 23.6138C21.1241 23.6138 22.4799 23.1884 23.62 22.3947Z"
+                                    fill="currentColor"
+                                />
+                            </svg>
+                        </a>
 
-                    <form
-                        action=""
-                        className="tw-mt-6 tw-mb-0 tw-space-y-4 tw-rounded-lg tw-p-4 tw-shadow-lg tw-sm:p-6 tw-lg:p-8" onSubmit={handleSubmit(onHandleSubmit)}
-                    >
-                        <p className="tw-text-center tw-text-lg tw-font-medium">Sign in to your account</p>
-
-                        <div>
-                            <label htmlFor="email" className="tw-sr-only">Email</label>
-
-                            <div className="tw-relative">
-                                {/* <input
-                                    type="email"
-                                    className="tw-w-full tw-rounded-lg tw-border-gray-200 tw-p-4 tw-pr-12 tw-text-sm tw-shadow-sm"
-                                    placeholder="Enter email"
-                                /> */}
-                                <input type="email" {...register('email')} className="tw-w-full tw-rounded-lg tw-border-gray-200 tw-p-4 tw-pr-12 tw-text-sm tw-shadow-sm" />
-
-                                <span
-                                    className="tw-absolute tw-inset-y-0 tw-right-0 tw-grid tw-place-content-center tw-px-4"
-                                >
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        className="tw-h-4 tw-w-4 tw-text-gray-400"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth="2"
-                                            d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"
-                                        />
-                                    </svg>
-                                </span>
-                            </div>
-                        </div>
-
-                        <div>
-                            <label htmlFor="password" className="tw-sr-only">Password</label>
-
-                            <div className="tw-relative">
-                                {/* <input
-                                    type="password"
-                                    className="tw-w-full tw-rounded-lg tw-border-gray-200 tw-p-4 tw-pr-12 tw-text-sm tw-shadow-sm"
-                                    placeholder="Enter password"
-                                /> */}
-                                <input type="password" {...register('password')} className="tw-w-full tw-rounded-lg tw-border-gray-200 tw-p-4 tw-pr-12 tw-text-sm tw-shadow-sm" />
-
-                                <span
-                                    className="tw-absolute tw-inset-y-0 tw-right-0 tw-grid tw-place-content-center tw-px-4"
-                                >
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        className="tw-h-4 tw-w-4 tw-text-gray-400"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth="2"
-                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                                        />
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth="2"
-                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                                        />
-                                    </svg>
-                                </span>
-                            </div>
-                        </div>
-
-                        <button
-                            type="submit"
-                            className="tw-block tw-w-full tw-rounded-lg tw-bg-indigo-600 tw-px-5 tw-py-3 tw-text-sm tw-font-medium tw-text-white"
+                        <h1
+                            className="tw-mt-6 tw-text-2xl tw-font-bold tw-text-gray-900 tw-sm:text-3xl tw-md:text-4xl"
                         >
-                            Sign in
-                        </button>
+                            Welcome to Timups
 
-                        <p className="tw-text-center tw-text-sm tw-text-gray-500">
-                            No account?
-                            <a className="tw-underline" href="/signup">Sign up</a>
+                        </h1>
+
+                        <p className="tw-mt-4 tw-leading-relaxed tw-text-gray-500">
+                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eligendi nam
+                            dolorum aliquam, quibusdam aperiam voluptatum.
                         </p>
-                    </form>
-                </div>
+
+                        <form action="#" className="tw-mt-8 tw-grid tw-grid-cols-6 tw-gap-6" onSubmit={handleSubmit(onSubmit)}>
+
+                            <div className="tw-col-span-6">
+                                <label htmlFor="Email" className="tw-block tw-text-sm tw-font-medium tw-text-gray-700">
+                                    Email
+                                </label>
+
+                                <input
+                                    {...register('email')}
+                                    className="tw-mt-1 tw-px-3 tw-h-9 tw-w-full tw-rounded-md tw-border-gray-200 tw-bg-white tw-text-sm tw-text-gray-700 tw-shadow-sm"
+                                />
+                                <p className='tw-text-red-600 text-[10px]'>{errors.email && errors.email.message}</p>
+                            </div>
+
+                            <div className="tw-col-span-6 tw-sm:col-span-3">
+                                <label
+                                    htmlFor="Password"
+                                    className="tw-block tw-text-sm tw-font-medium tw-text-gray-700"
+                                >
+                                    Password
+                                </label>
+
+                                <input
+                                    type="password"
+                                    {...register('password')}
+                                    className="tw-mt-1 tw-px-3 tw-h-9 tw-w-full tw-rounded-md tw-border-gray-200 tw-bg-white tw-text-sm tw-text-gray-700 tw-shadow-sm"
+                                />
+                                <p className='tw-text-red-600 text-[10px]'>{errors.password && errors.password.message}</p>
+                            </div>
+
+
+
+                            <div className="tw-col-span-6 tw-sm:flex tw-sm:items-center tw-sm:gap-4">
+                                <button
+                                    className="tw-inline-block tw-shrink-0 tw-rounded-md tw-border tw-border-blue-600 tw-bg-blue-600 tw-px-12 tw-py-3 tw-text-sm tw-font-medium tw-text-white tw-transition tw-hover:bg-transparent tw-hover:text-blue-600 tw-focus:outline-none tw-focus:ring tw-active:text-blue-500"
+                                >
+                                    Đăng nhập
+                                </button>
+
+                                <p className="tw-mt-4 tw-text-sm tw-text-gray-500 tw-sm:mt-0">
+                                    Already have an account?
+                                    <span className="tw-text-gray-700 tw-underline"><Link to={"/signup"}>Log up</Link></span>.
+                                </p>
+                            </div>
+                        </form>
+                    </div>
+                </main>
             </div>
-        </div>
+        </section>
     )
 }
 

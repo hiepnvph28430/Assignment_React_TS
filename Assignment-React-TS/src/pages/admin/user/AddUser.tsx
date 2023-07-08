@@ -1,24 +1,23 @@
 import React, { useState } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form' //import useForm hook
-import { IProduct } from '../../../interfaces/product'
+import { IUser } from '../../../interfaces/user'
 import { Button, Form, Input, Modal, Upload } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import type { RcFile, UploadProps } from 'antd/es/upload';
 import type { UploadFile } from 'antd/es/upload/interface';
 import { useNavigate } from 'react-router-dom';
 interface IProps {
-    onAdd: (product: IProduct) => void
+    onAdd: (user: IUser) => void
 }
 
-
-const AddProductPage = (props: IProps) => {
+const AddUserPage = (props: IProps) => {
 
     const navigate = useNavigate()
     const onFinish = (values: any) => {
 
 
         props.onAdd(values);
-        navigate("/admin/products")
+        navigate("/admin/users")
     };
 
     const onFinishFailed = (errorInfo: any) => {
@@ -39,42 +38,43 @@ const AddProductPage = (props: IProps) => {
                 autoComplete="off"
             >
                 <Form.Item
-                    label="Product Name"
-                    name="name"
-                    rules={[{ required: true, message: 'Please input your product name!' }]}
+                    label="First name"
+                    name="firstName"
+                // rules={[{ required: true, message: 'Please input your First name!' }]}
                 >
                     <Input />
                 </Form.Item>
 
                 <Form.Item
-                    label="Product Price"
-                    name="price"
-                    rules={[{ required: true, message: 'Please input your price!' }]}
+                    label="Last name"
+                    name="lastName"
+                // rules={[{ required: true, message: 'Please input your Last name!' }]}
                 >
                     <Input />
                 </Form.Item>
 
                 <Form.Item
-                    label="Product Image"
-                    name="image"
-                    rules={[{ required: true, message: 'Please input your image!' }]}
+                    label="Email"
+                    name="email"
+                    rules={[{ required: true, message: 'Please input your email!' }]}
                 >
 
                     <Input />
                 </Form.Item>
 
                 <Form.Item
-                    label="Description"
-                    name="desc"
-
+                    label="Password"
+                    name="password"
+                    rules={[{ required: true, message: 'Please input your password!' }]}
                 >
 
                     <Input />
                 </Form.Item>
+
                 <Form.Item
-                    label="Category"
-                    name="categoryId"
-                    rules={[{ required: true, message: 'Please input your image!' }]}
+                    label="Role"
+                    name="role"
+                    rules={[{ required: true, message: 'Please input your role!' }]}
                 >
 
                     <Input />
@@ -82,7 +82,7 @@ const AddProductPage = (props: IProps) => {
 
                 <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
                     <Button type="primary" htmlType="submit" className='tw-text-white tw-bg-blue-500 tw-border tw-px-3 tw-font-medium tw-rounded-lg tw-border-blue-50 '>
-                        Add New Product
+                        Add New User
                     </Button>
                 </Form.Item>
             </Form>
@@ -97,4 +97,4 @@ const AddProductPage = (props: IProps) => {
     )
 }
 
-export default AddProductPage
+export default AddUserPage

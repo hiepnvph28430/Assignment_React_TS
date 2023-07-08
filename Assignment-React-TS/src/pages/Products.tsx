@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom';
 import { IProduct } from '../interfaces/product';
 
 interface IProps {
@@ -112,7 +113,7 @@ const Products = (props: IProps) => {
                         {
                             data.map(product => {
                                 return (
-                                    <div className="col-sm-6 col-xl-3">
+                                    <div className="col-sm-6 col-xl-3"> <Link to={`/products/${product._id}`}>
                                         <div className="box">
                                             <a href="">
                                                 <div className="img-box">
@@ -136,7 +137,7 @@ const Products = (props: IProps) => {
                                                 </div>
                                             </a>
                                         </div>
-                                    </div>
+                                    </Link>  </div>
                                 )
                             })
                         }
@@ -176,7 +177,7 @@ const Products = (props: IProps) => {
                         </a>
                     </div>
                 </div>
-            </section>
+            </section >
 
             {/* <!-- end shop section --> */}
 
@@ -265,7 +266,7 @@ const Products = (props: IProps) => {
                 </div>
             </footer>
             {/* <!-- footer section --> */}
-        </div>
+        </div >
     )
 }
 

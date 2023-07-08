@@ -1,8 +1,29 @@
 import React from 'react'
+import { useForm } from "react-hook-form"
+import * as Yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { SignupForm, signupSchema } from '../interfaces/user'
+import { signup } from '../api/auth'
+import { Link, useNavigate } from 'react-router-dom'
 
 type Props = {}
 
 const Signup = (props: Props) => {
+    const navigate = useNavigate()
+    const { register, handleSubmit, formState: { errors } } = useForm<SignupForm>({
+        resolver: yupResolver(signupSchema)
+    });
+    const onSubmit = async (data: SignupForm) => {
+        // console.log(data)
+        try {
+            const response = await signup(data)
+            console.log(response)
+            alert("Đăng kí thành công")
+            navigate("/signin")
+        } catch (error) {
+            console.log(error);
+        }
+    }
     return (
         <section className="tw-bg-white">
             <div className="tw-lg:grid tw-lg:min-h-screen tw-lg:grid-cols-12">
@@ -48,7 +69,7 @@ const Signup = (props: Props) => {
                             dolorum aliquam, quibusdam aperiam voluptatum.
                         </p>
 
-                        <form action="#" className="tw-mt-8 tw-grid tw-grid-cols-6 tw-gap-6">
+                        <form action="#" className="tw-mt-8 tw-grid tw-grid-cols-6 tw-gap-6" onSubmit={handleSubmit(onSubmit)}>
                             <div className="tw-col-span-6 tw-sm:col-span-3">
                                 <label
                                     htmlFor="FirstName"
@@ -58,11 +79,13 @@ const Signup = (props: Props) => {
                                 </label>
 
                                 <input
-                                    type="text"
-                                    id="FirstName"
-                                    name="first_name"
-                                    className="tw-mt-1 tw-h-9 tw-w-full tw-rounded-md tw-border-gray-200 tw-bg-white tw-text-sm tw-text-gray-700 tw-shadow-sm"
+                                    // type="text"
+                                    // id="FirstName"
+                                    // name="first_name"
+                                    {...register('firstName')}
+                                    className="tw-mt-1 tw-px-3 tw-h-9 tw-w-full tw-rounded-md tw-border-gray-200 tw-bg-white tw-text-sm tw-text-gray-700 tw-shadow-sm"
                                 />
+                                <p className='tw-text-red-600 text-[10px]'>{errors.firstName && errors.firstName.message}</p>
                             </div>
 
                             <div className="tw-col-span-6 tw-sm:col-span-3">
@@ -74,11 +97,10 @@ const Signup = (props: Props) => {
                                 </label>
 
                                 <input
-                                    type="text"
-                                    id="LastName"
-                                    name="last_name"
-                                    className="tw-mt-1 tw-h-9 tw-w-full tw-rounded-md tw-border-gray-200 tw-bg-white tw-text-sm tw-text-gray-700 tw-shadow-sm"
+                                    {...register('lastName')}
+                                    className="tw-mt-1 tw-px-3 tw-h-9 tw-w-full tw-rounded-md tw-border-gray-200 tw-bg-white tw-text-sm tw-text-gray-700 tw-shadow-sm"
                                 />
+                                <p className='tw-text-red-600 text-[10px]'>{errors.lastName && errors.lastName.message}</p>
                             </div>
 
                             <div className="tw-col-span-6">
@@ -87,11 +109,10 @@ const Signup = (props: Props) => {
                                 </label>
 
                                 <input
-                                    type="email"
-                                    id="Email"
-                                    name="email"
-                                    className="tw-mt-1 tw-h-9 tw-w-full tw-rounded-md tw-border-gray-200 tw-bg-white tw-text-sm tw-text-gray-700 tw-shadow-sm"
+                                    {...register('email')}
+                                    className="tw-mt-1 tw-px-3 tw-h-9 tw-w-full tw-rounded-md tw-border-gray-200 tw-bg-white tw-text-sm tw-text-gray-700 tw-shadow-sm"
                                 />
+                                <p className='tw-text-red-600 text-[10px]'>{errors.email && errors.email.message}</p>
                             </div>
 
                             <div className="tw-col-span-6 tw-sm:col-span-3">
@@ -104,10 +125,10 @@ const Signup = (props: Props) => {
 
                                 <input
                                     type="password"
-                                    id="Password"
-                                    name="password"
-                                    className="tw-mt-1 tw-h-9 tw-w-full tw-rounded-md tw-border-gray-200 tw-bg-white tw-text-sm tw-text-gray-700 tw-shadow-sm"
+                                    {...register('password')}
+                                    className="tw-mt-1 tw-px-3 tw-h-9 tw-w-full tw-rounded-md tw-border-gray-200 tw-bg-white tw-text-sm tw-text-gray-700 tw-shadow-sm"
                                 />
+                                <p className='tw-text-red-600 text-[10px]'>{errors.password && errors.password.message}</p>
                             </div>
 
                             <div className="tw-col-span-6 tw-sm:col-span-3">
@@ -120,13 +141,26 @@ const Signup = (props: Props) => {
 
                                 <input
                                     type="password"
-                                    id="PasswordConfirmation"
-                                    name="password_confirmation"
+                                    {...register('confirmPassword')}
+                                    className="tw-mt-1 tw-px-3 tw-h-9 tw-w-full tw-rounded-md tw-border-gray-200 tw-bg-white tw-text-sm tw-text-gray-700 tw-shadow-sm"
+                                />
+                                <p className='tw-text-red-600 text-[10px]'>{errors.confirmPassword && errors.confirmPassword.message}</p>
+                            </div>
+                            <div className="tw-col-span-6 tw-sm:col-span-3 tw-hidden">
+                                <label
+                                    htmlFor="LastName"
+                                    className="tw-block  tw-text-sm tw-font-medium tw-text-gray-700"
+                                >
+                                    Role
+                                </label>
+
+                                <input
+                                    {...register('role')}
                                     className="tw-mt-1 tw-h-9 tw-w-full tw-rounded-md tw-border-gray-200 tw-bg-white tw-text-sm tw-text-gray-700 tw-shadow-sm"
                                 />
+                                <p className='tw-text-red-600 text-[10px]'>{errors.role && errors.role.message}</p>
                             </div>
-
-                            <div className="tw-col-span-6">
+                            {/* <div className="tw-col-span-6">
                                 <label htmlFor="MarketingAccept" className="tw-flex tw-gap-4">
                                     <input
                                         type="checkbox"
@@ -140,9 +174,9 @@ const Signup = (props: Props) => {
                                         company announcements.
                                     </span>
                                 </label>
-                            </div>
+                            </div> */}
 
-                            <div className="tw-col-span-6">
+                            {/* <div className="tw-col-span-6">
                                 <p className="tw-text-sm tw-text-gray-500">
                                     By creating an account, you agree to our
                                     <a href="#" className="tw-text-gray-700 tw-underline">
@@ -151,7 +185,7 @@ const Signup = (props: Props) => {
                                     and
                                     <a href="#" className="tw-text-gray-700 tw-underline">privacy policy</a>.
                                 </p>
-                            </div>
+                            </div> */}
 
                             <div className="tw-col-span-6 tw-sm:flex tw-sm:items-center tw-sm:gap-4">
                                 <button
@@ -162,7 +196,7 @@ const Signup = (props: Props) => {
 
                                 <p className="tw-mt-4 tw-text-sm tw-text-gray-500 tw-sm:mt-0">
                                     Already have an account?
-                                    <a href="/signin" className="tw-text-gray-700 tw-underline">Log in</a>.
+                                    <span className="tw-text-gray-700 tw-underline"><Link to={"/signin"}>Log in</Link></span>.
                                 </p>
                             </div>
                         </form>

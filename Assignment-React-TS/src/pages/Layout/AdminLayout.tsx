@@ -30,6 +30,7 @@ const items: MenuItem[] = [
     getItem('Dashboard', 'dashboard', <DashboardOutlined />),
     getItem('Category', '/admin/categories ', <UnorderedListOutlined />),
     getItem('Product List', '/admin/products', <UnorderedListOutlined />),
+    getItem('User List', '/admin/users', <UnorderedListOutlined />),
     getItem('Profile', '5', <UserOutlined />),
     getItem('SignOut', '6', <PoweroffOutlined />),
 

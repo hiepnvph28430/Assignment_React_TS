@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom';
 import { IProduct } from '../../interfaces/product';
 
 type Props = {}
@@ -11,6 +12,7 @@ const RootLayout = (props: IProps) => {
     useEffect(() => {
         setData(props.products)
     }, [props])
+
     return (
         <div>
             <div className="hero_area">
@@ -58,15 +60,16 @@ const RootLayout = (props: IProps) => {
                                     </li>
                                 </ul>
                                 <div className="user_option-box">
-                                    <a href="/signup">
+                                    <Link to={"/signin"}>
                                         <i className="fa fa-user" aria-hidden="true"></i>
-                                    </a>
+                                    </Link>
                                     <a href="">
                                         <i className="fa fa-cart-plus" aria-hidden="true"></i>
                                     </a>
                                     <a href="">
                                         <i className="fa fa-search" aria-hidden="true"></i>
                                     </a>
+                                    {/* <Link to={"/signin"} className="">Đăng xuất</Link> */}
                                 </div>
                             </div>
                         </nav>
@@ -205,7 +208,7 @@ const RootLayout = (props: IProps) => {
                         {
                             data.map(product => {
                                 return (
-                                    <div className="col-sm-6 col-xl-3">
+                                    <div className="col-sm-6 col-xl-3"><Link to={`/products/${product._id}`}>
                                         <div className="box">
                                             <a href="">
                                                 <div className="img-box">
@@ -229,7 +232,7 @@ const RootLayout = (props: IProps) => {
                                                 </div>
                                             </a>
                                         </div>
-                                    </div>
+                                    </Link></div>
                                 )
                             })
                         }

@@ -20,9 +20,10 @@ app.use("/api", authRouter)
 // connect to db
 
 mongoose.connect("mongodb://127.0.0.1:27017/we17309");
-
+// mongoose.connect("mongodb://localhost:27017/we17309")
 export const viteNodeApp = app;
 // -> workspace
+
 // -> collection ( thư mục chứa)
 // -> request
 

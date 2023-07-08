@@ -10,6 +10,7 @@ const productShema = Joi.object({
     name: Joi.string().required(),
     price: Joi.number().required(),
     desc: Joi.string(),
+    image: Joi.string(),
     categoryId: Joi.string().required(),
 })
 export const getAll = async (req, res) => {

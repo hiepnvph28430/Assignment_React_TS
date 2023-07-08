@@ -63,45 +63,191 @@ const ProductDetailPage = (props: IProps) => {
 
             {/* <!-- shop section --> */}
 
-            <section className="shop_section layout_padding">
-                <div className="container">
-                    <div className="heading_container heading_center">
-                        <h2>
-                            Latest Watches
-                        </h2>
+
+            <section>
+                <div className="tw-relative tw-mx-auto tw-max-w-screen-xl tw-px-4 tw-py-8">
+                    <div>
+                        <h1 className="tw-text-2xl tw-font-bold tw-lg:text-3xl"> {currentProduct?.name}</h1>
+
+                        <p className="tw-mt-1 tw-text-sm tw-text-gray-500">SKU: #012345</p>
                     </div>
-                    <div className="row">
-                        <div className="col-sm-6 col-xl-3">
-                            <div className="box">
-                                <a href="">
-                                    <div className="img-box">
-                                        <img src={currentProduct?.image} alt="" />
-                                    </div>
-                                    <div className="detail-box">
-                                        <h6>
-                                            {currentProduct?.name}
-                                        </h6>
-                                        <h6>
-                                            Price:
-                                            <span>
-                                                {currentProduct?.price}
-                                            </span>
-                                        </h6>
-                                    </div>
-                                    <div className="new">
-                                        <span>
-                                            New
-                                        </span>
-                                    </div>
-                                </a>
+
+                    <div className="tw-grid tw-gap-8 tw-grid-cols-4 tw-lg:items-start">
+                        <div className="tw-col-span-3">
+                            <div className="tw-relative tw-mt-4">
+                                <img
+
+                                    src={currentProduct?.image} alt=""
+                                    className="tw-h-[500px] tw-w-[500px] tw-rounded-xl tw-object-cover tw-lg:h-[540px] "
+                                />
+
+                                <div
+                                    className="tw-absolute tw-bottom-4 tw-left-[100px]  tw-inline-flex tw--translate-x-1/4 tw-items-center tw-rounded-full tw-bg-black/75 tw-px-3 tw-py-1.5 tw-text-white"
+                                >
+                                    <svg
+                                        className="tw-h-4 tw-w-4"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
+                                        />
+                                    </svg>
+
+                                    <span className="tw-ml-1.5 tw-text-xs"> Hover to zoom </span>
+                                </div>
                             </div>
+
+                            <ul className="tw-mt-1 tw-flex tw-gap-1">
+                                <li>
+                                    <img
+                                        src={currentProduct?.image} alt=""
+                                        className="tw-h-16 tw-w-16 tw-rounded-md tw-object-cover"
+                                    />
+                                </li>
+
+                                <li>
+                                    <img
+                                        src={currentProduct?.image} alt=""
+                                        className="tw-h-16 tw-w-16 tw-rounded-md tw-object-cover"
+                                    />
+                                </li>
+
+                                <li>
+                                    <img
+                                        src={currentProduct?.image} alt=""
+                                        className="tw-h-16 tw-w-16 tw-rounded-md tw-object-cover"
+                                    />
+                                </li>
+
+                                <li>
+                                    <img
+                                        src={currentProduct?.image} alt=""
+                                        className="tw-h-16 tw-w-16 tw-rounded-md tw-object-cover"
+                                    />
+                                </li>
+                            </ul>
                         </div>
 
-                    </div>
+                        <div className="tw-lg-sticky tw-lg:top-0">
+                            <form className="tw-space-y-10 tw-lg:pt-8">
+                                <fieldset>
+                                    <legend className="tw-text-lg tw-font-bold">Color</legend>
 
+                                    <div className="tw-mt-2 flex tw-flex-wrap tw-gap-1">
+                                        <label htmlFor="color_green" className="tw-cursor-pointer">
+                                            <input
+                                                type="radio"
+                                                id="color_green"
+                                                name="color"
+                                                className="tw-peer tw-sr-only"
+                                                checked
+                                            />
+
+                                            <span
+                                                className="tw-block tw-h-6 tw-w-6 tw-rounded-full tw-border tw-border-gray-200 tw-bg-green-700 tw-ring-1 tw-ring-transparent tw-ring-offset-1 tw-peer-checked:ring-gray-300"
+                                            ></span>
+                                        </label>
+
+                                        <label htmlFor="color_blue" className="tw-cursor-pointer">
+                                            <input
+                                                type="radio"
+                                                id="color_blue"
+                                                name="color"
+                                                className="tw-peer tw-sr-only"
+                                            />
+
+                                            <span
+                                                className="tw-block tw-h-6 tw-w-6 tw-rounded-full tw-border tw-border-gray-200 tw-bg-blue-700 tw-ring-1 tw-ring-transparent tw-ring-offset-1 tw-peer-checked:ring-gray-300"
+                                            ></span>
+                                        </label>
+
+                                        <label htmlFor="color_pink" className="tw-cursor-pointer">
+                                            <input
+                                                type="radio"
+                                                id="color_pink"
+                                                name="color"
+                                                className="tw-peer tw-sr-only"
+                                            />
+
+                                            <span
+                                                className="tw-block tw-h-6 tw-w-6 tw-rounded-full tw-border tw-border-gray-200 tw-bg-pink-700 tw-ring-1 tw-ring-transparent tw-ring-offset-1 tw-peer-checked:ring-gray-300"
+                                            ></span>
+                                        </label>
+
+                                        <label htmlFor="color_red" className="tw-cursor-pointer">
+                                            <input
+                                                type="radio"
+                                                id="color_red"
+                                                name="color"
+                                                className="tw-peer tw-sr-only"
+                                            />
+
+                                            <span
+                                                className="tw-block tw-h-6 tw-w-6 tw-rounded-full tw-border tw-border-gray-200 tw-bg-red-700 tw-ring-1 tw-ring-transparent tw-ring-offset-1 tw-peer-checked:ring-gray-300"
+                                            ></span>
+                                        </label>
+
+                                        <label htmlFor="color_indigo" className="tw-cursor-pointer">
+                                            <input
+                                                type="radio"
+                                                id="color_indigo"
+                                                name="color"
+                                                className="tw-peer tw-sr-only"
+                                            />
+
+                                            <span
+                                                className="tw-block tw-h-6 tw-w-6 tw-rounded-full tw-border tw-border-gray-200 tw-bg-indigo-700 tw-ring-1 tw-ring-transparent tw-ring-offset-1 tw-peer-checked:ring-gray-300"
+                                            ></span>
+                                        </label>
+                                    </div>
+                                </fieldset>
+
+
+
+                                <div className="tw-rounded tw-border tw-bg-gray-100 tw-p-4">
+                                    <p className="tw-text-sm">
+                                        <span className="tw-block"> Pay as low as $3/mo with 0% APR. </span>
+
+                                        <a href="" className="tw-mt-1 tw-inline-block tw-underline"> Find out more </a>
+                                    </p>
+                                </div>
+
+                                <div>
+                                    <p className="tw-text-xl tw-font-bold"> {currentProduct?.price}</p>
+                                </div>
+
+                                <button
+                                    type="submit"
+                                    className="tw-w-full tw-rounded tw-bg-red-700 tw-px-6 tw-py-3 tw-text-sm tw-font-bold tw-uppercase tw-tracking-wide tw-text-white"
+                                >
+                                    Add to cart
+                                </button>
+
+                                <button
+                                    type="button"
+                                    className="tw-w-full tw-rounded tw-border tw-border-gray-300 tw-bg-gray-100 tw-px-6 tw-py-3 tw-text-sm tw-font-bold tw-uppercase tw-tracking-wide"
+                                >
+                                    Notify when on sale
+                                </button>
+                            </form>
+                        </div>
+
+                        <div className="tw-lg:col-span-3">
+                            <div className="tw-prose tw-max-w-none">
+                                <p>
+                                    {currentProduct?.desc}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
-
             {/* <!-- end shop section --> */}
 
             {/* <!-- footer section --> */}

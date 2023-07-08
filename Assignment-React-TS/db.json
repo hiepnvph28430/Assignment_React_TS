@@ -19,6 +19,13 @@
       "price": "$998",
       "image": "https://res.cloudinary.com/hiepnc/image/upload/v1680835358/w4_mhhyka.png",
       "id": 3
+    },
+    {
+      "name": "Apple Watch 5",
+      "price": "$99",
+      "image": "https://res.cloudinary.com/hiepnc/image/upload/v1680835358/w4_mhhyka.png",
+      "desc": "Thông số kỹ thuật Apple Watch Series 8 GPS + Cellular, 41mm - Viền nhôm dây cao su - VN/A",
+      "id": 4
     }
   ],
   "Categories": [
@@ -29,6 +36,33 @@
     {
       "name": "abvcc ccc 1",
       "id": 6
+    }
+  ],
+  "users": [
+    {
+      "email": "merber@gmail.com",
+      "password": "$2a$10$xxEN6RYQrYFGG//QdY5wSOUiM8ym7xl7HIdXi2oMuPULoemDyDgM2",
+      "firstName": "member",
+      "lastName": "member",
+      "confirmPassword": "123456",
+      "role": "",
+      "id": 6
+    },
+    {
+      "email": "abc@gmail.com",
+      "password": "$2a$10$MpzGrqRyzueAF8jVcCfZTeeWUsEMcy5bG/SGza.fKhbEDz6UMmbrm",
+      "firstName": "abc",
+      "lastName": "abc",
+      "role": "admin",
+      "id": 10
+    },
+    {
+      "email": "admin@gmail.com",
+      "password": "$2a$10$U3PGVUraIAuBNLiemLnlyORwVA69Vy8POSN9rWClufXuVNLPDn1xW",
+      "firstName": "admin",
+      "lastName": "admin",
+      "role": "admin",
+      "id": 11
     }
   ]
 }

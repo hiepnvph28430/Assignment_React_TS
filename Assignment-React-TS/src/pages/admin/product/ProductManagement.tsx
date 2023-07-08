@@ -4,37 +4,43 @@ import { IProduct } from '../../../interfaces/product';
 import { Space, Table, Tag } from 'antd';
 
 import type { ColumnsType } from 'antd/es/table';
+import { getAllProducts, removeProduct } from '../../../api/product';
 const { Column, ColumnGroup } = Table;
 
 interface DataType {
     key: string | number;
-    id: number;
+    _id: number | string;
     name: string;
     price: number;
 
 
 }
 interface IProps {
-    products: IProduct[],
-    onRemove: (id: number) => void
+
+    onRemove: (_id: number | string) => void
 }
 const ProductManagementPage = (props: IProps) => {
-
-    const removeProduct = (id: number) => {
-        props.onRemove(id)
+    const [products, setProducts] = useState<IProduct[]>([]);
+    useEffect(() => {
+        getAllProducts().then(({ data }) => setProducts(data.docs))
+    }, [])
+    const removeProduct1 = (_id: number | string) => {
+        setProducts(products.filter(product => product._id !== _id))
+        props.onRemove(_id)
     }
+
     const columns: ColumnsType<DataType> = [
         {
             title: 'ID',
-            dataIndex: 'id',
-            key: 'id',
+            dataIndex: '_id',
+            key: '_id',
             render: (text) => <a>{text}</a>,
         },
         {
             title: 'Product Image',
             dataIndex: 'image',
             key: 'image',
-            render: (img) => <img className='tw-w-80 tw-h-48' src={img} alt="" />,
+            render: (img) => <img className='tw-w-70 tw-h-48' src={img} alt="" />,
         },
         {
             title: 'Product Name',
@@ -59,16 +65,16 @@ const ProductManagementPage = (props: IProps) => {
             key: 'action',
             render: (_, record) => (
                 <Space size="middle">
-                    <button className='tw-text-white tw-bg-blue-500 tw-border tw-px-3 tw-font-medium tw-rounded-lg tw-border-blue-50 '><Link to={`/admin/products/${record.id}/update`}>Update</Link></button>
-                    <button className='tw-text-white tw-bg-red-500 tw-border tw-px-3 tw-font-medium tw-rounded-lg tw-border-blue-50' onClick={() => removeProduct(record.id)}>Remove</button>
+                    <button className='tw-text-white tw-bg-blue-500 tw-border tw-px-3 tw-font-medium tw-rounded-lg tw-border-blue-50 '><Link to={`/admin/products/${record._id}/update`}>Update</Link></button>
+                    <button className='tw-text-white tw-bg-red-500 tw-border tw-px-3 tw-font-medium tw-rounded-lg tw-border-blue-50' onClick={() => removeProduct1(record._id)}>Remove</button>
                 </Space>
             ),
         },
     ];
-
-    const data: DataType[] = props.products.map((item: IProduct) => {
+    console.log(props)
+    const data: DataType[] = products.map((item: IProduct) => {
         return {
-            key: item.id,
+            key: item._id,
             ...item
         }
     })

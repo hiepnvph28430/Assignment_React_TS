@@ -21,28 +21,38 @@ import AddCategoryPage from './pages/admin/category/AddCategory'
 import { ICategory } from './interfaces/category'
 import { addCategory, getAllCategories, removeCategory, updateCategory } from './api/category'
 import UpdateCategory from './pages/admin/category/UpdateCategory'
+import { IUser } from './interfaces/user'
+import { addUser, getAllUsers, removeUser, updateUser } from './api/auth'
+import AddUserPage from './pages/admin/user/AddUser'
+import UserManagementPage from './pages/admin/user/UserManagement'
+import UpdateUserPage from './pages/admin/user/UpdateUser'
 
 function App() {
   const [products, setProducts] = useState<IProduct[]>([]);
   useEffect(() => {
-    getAllProducts().then(({ data }) => setProducts(data))
+    getAllProducts().then(({ data }) => setProducts(data.docs))
   }, [])
-  const onHandleRemove = (id: number) => {
+  const onHandleRemove = async (_id: number | string) => {
     const confirm = window.confirm("Ban co muon xoa khong ?")
     if (confirm) {
-      removeProduct(id).then(() => setProducts(products.filter(product => product.id !== id)))
+      console.log("sfsds")
+      await removeProduct(_id);
+      console.log("aaaaaa")
+
     }
   }
   const onHandleAdd = (product: IProduct) => {
+    console.log('add', product)
     addProduct(product).then(() => getAllProducts().then(({ data }) => setProducts(data)))
   }
   const onHandleUpdate = (product: IProduct) => {
+    console.log("update", product)
     updateProduct(product).then(() => getAllProducts().then(({ data }) => setProducts(data)))
   }
   // Category
   const [categories, setCategories] = useState<ICategory[]>([]);
   useEffect(() => {
-    getAllCategories().then(({ data }) => setCategories(data))
+    getAllCategories().then(({ data }) => setCategories(data.docs))
   }, [])
   const onHandleRemoveCate = (id: number) => {
     const confirm = window.confirm("Ban co muon xoa khong ?")
@@ -56,9 +66,28 @@ function App() {
   const onHandleUpdateCate = (category: ICategory) => {
     updateCategory(category).then(() => getAllCategories().then(({ data }) => setCategories(data)))
   }
+  // User
+
+  const [users, setUsers] = useState<IUser[]>([]);
+  useEffect(() => {
+    getAllUsers().then(({ data }) => setUsers(data.docs))
+  }, [])
+  const onHandleUser = (id: number) => {
+    const confirm = window.confirm("Ban co muon xoa khong ?")
+    if (confirm) {
+      removeUser(id).then(() => setUsers(users.filter(user => user.id !== id)))
+    }
+  }
+  const onHandleAddUser = (user: IUser) => {
+    addUser(user).then(() => getAllUsers().then(({ data }) => setUsers(data)))
+  }
+  const onHandleUpdateUser = (user: IUser) => {
+    updateUser(user).then(() => getAllUsers().then(({ data }) => setUsers(data)))
+  }
   return (
     <div className="App">
       <Routes>
+
         <Route path='/'>
           <Route index element={<RootLayout products={products} />} />
           <Route path='signup' element={<Signup />} />
@@ -78,9 +107,15 @@ function App() {
             <Route path=':id/update' element={<UpdateCategory onUpdate={onHandleUpdateCate} categories={categories} />} />
           </Route>
           <Route path='products'>
-            <Route index element={<ProductManagementPage products={products} onRemove={onHandleRemove} />} />
+            <Route index element={<ProductManagementPage onRemove={onHandleRemove} />} />
             <Route path='add' element={<AddProduct onAdd={onHandleAdd} />} />
             <Route path=':id/update' element={<UpdateProduct onUpdate={onHandleUpdate} products={products} />} />
+          </Route>
+
+          <Route path='users'>
+            <Route index element={<UserManagementPage users={users} onRemove={onHandleUser} />} />
+            <Route path='add' element={<AddUserPage onAdd={onHandleAddUser} />} />
+            <Route path=':id/update' element={<UpdateUserPage onUpdate={onHandleUpdateUser} users={users} />} />
           </Route>
         </Route>
       </Routes>
